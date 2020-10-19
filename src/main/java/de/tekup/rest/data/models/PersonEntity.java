@@ -32,7 +32,7 @@ public class PersonEntity {
 	private AddressEntity address;
 	
 	// Relation One To Many
-	private List<TelephoneNumberEntity> phones;
+	//private List<TelephoneNumberEntity> phones;
 	
 
 }
