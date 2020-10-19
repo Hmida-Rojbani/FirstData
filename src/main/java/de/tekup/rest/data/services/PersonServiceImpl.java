@@ -7,7 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.tekup.rest.data.models.AddressEntity;
 import de.tekup.rest.data.models.PersonEntity;
+import de.tekup.rest.data.repositories.AddressRepository;
 import de.tekup.rest.data.repositories.PersonRepository;
 
 @Service
@@ -15,18 +17,41 @@ public class PersonServiceImpl implements PersonService {
 	
 	
 	private PersonRepository repos;
+	private AddressRepository reposAddress;
 	
 	
 	@Autowired
-	public PersonServiceImpl(PersonRepository repos) {
+	public PersonServiceImpl(PersonRepository repos, AddressRepository reposAddress) {
 		super();
 		this.repos = repos;
+		this.reposAddress = reposAddress;
 	}
 
 	@Override
 	public PersonEntity createPersonEntity(PersonEntity entity) {
-		return repos.save(entity);
+		// extraction of Address part 
+		AddressEntity address = entity.getAddress();
+		// saving in DB Address without Person part
+		AddressEntity addressInBase = reposAddress.save(address);
+		// Add Id of Address in the Person 
+		entity.setAddress(addressInBase);
+		// save of Person with Address
+		PersonEntity newEntity = repos.save(entity);
+		// Add in Address The Saved Person (With Id)
+		address.setPerson(newEntity);
+		// Resave Address
+		addressInBase = reposAddress.save(address);
+		System.out.println(newEntity);
+		addressInBase = reposAddress.findById(1).orElse(null);
+		
+		System.out.println(addressInBase);
+		System.out.println("address Person :"+addressInBase.getPerson());
+		newEntity = repos.findById(1L).orElse(null);
+		System.out.println(newEntity);
+		return newEntity;
 	}
+
+	
 
 	@Override
 	public List<PersonEntity> getAllPersonEntities() {
@@ -65,6 +90,11 @@ public class PersonServiceImpl implements PersonService {
 		PersonEntity entity = this.getPersonEntityById(id);
 		repos.deleteById(id);
 		return entity;
+	}
+
+	@Override
+	public List<AddressEntity> getAllAddressEntities() {
+		return reposAddress.findAll();
 	}
 
 }

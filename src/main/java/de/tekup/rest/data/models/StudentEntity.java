@@ -1,6 +1,6 @@
 package de.tekup.rest.data.models;
 
-// table name must be Strdent
+// table name must be Student
 // Turn this to Entity and  create the CRUD of this Entity
 public class StudentEntity {
 	

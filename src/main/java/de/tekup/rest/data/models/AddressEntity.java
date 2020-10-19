@@ -1,34 +1,31 @@
 package de.tekup.rest.data.models;
 
-import java.time.LocalDate;
-
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "Person")
-public class PersonEntity {
+@ToString(exclude = "person")
+public class AddressEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private int id;
 	
-	@Column(name =  "persoName", length = 50, nullable = false, unique = true)
-	private String name;
-	private LocalDate dateOfBirth;
+	private int number;
+	private String street;
+	private String city;
 	
-	@OneToOne
-	@JsonIgnore
-	private AddressEntity address;
+	@OneToOne(mappedBy = "address")
+	private PersonEntity person;
 	
-
 }

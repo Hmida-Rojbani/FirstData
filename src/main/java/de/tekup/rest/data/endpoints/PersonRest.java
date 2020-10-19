@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.tekup.rest.data.models.AddressEntity;
 import de.tekup.rest.data.models.PersonEntity;
 import de.tekup.rest.data.services.PersonService;
 
@@ -34,6 +35,11 @@ public class PersonRest {
 	@GetMapping
 	public List<PersonEntity> getAll() {
 		return service.getAllPersonEntities();
+	}
+	
+	@GetMapping("/address")
+	public List<AddressEntity> getAllAddress() {
+		return service.getAllAddressEntities();
 	}
 
 	@PostMapping
