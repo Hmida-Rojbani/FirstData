@@ -1,6 +1,7 @@
 package de.tekup.rest.data.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +30,9 @@ public class PersonEntity {
 	@OneToOne
 	@JsonIgnore
 	private AddressEntity address;
+	
+	// Relation One To Many
+	private List<TelephoneNumberEntity> phones;
 	
 
 }
