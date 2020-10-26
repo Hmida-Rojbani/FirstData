@@ -1,0 +1,29 @@
+{
+	"name": "person1-new",
+	"dateOfBirth": "2020-10-19",
+	"address": {
+		"number" : 22,
+		"street": "ste.",
+		"city": "Ariana"
+	},
+    "phones": [
+    	{
+    		"number": "55555555",
+    		"operator": "Orange"
+    	},
+    	{
+    		"number": "22222222",
+    		"operator": "Oredoo"
+    	}
+    	],
+    	"games": [
+    	{
+    		"title": "Fifa2020",
+    		"type": "football"
+    	},
+    	{
+    		"title": "POP",
+    		"type": "advanture"
+    	}
+    	]
+}
