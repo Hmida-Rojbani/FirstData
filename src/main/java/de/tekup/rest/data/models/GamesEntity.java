@@ -1,5 +1,6 @@
 package de.tekup.rest.data.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -24,6 +27,7 @@ public class GamesEntity {
 	
 	@ManyToMany
 	@JoinTable(name = "PlayedBy")
-	private List<PersonEntity> persons;
+	@JsonIgnore
+	private List<PersonEntity> persons ;
 
 }
