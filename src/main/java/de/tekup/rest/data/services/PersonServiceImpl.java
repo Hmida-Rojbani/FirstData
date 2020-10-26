@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import de.tekup.rest.data.models.AddressEntity;
 import de.tekup.rest.data.models.PersonEntity;
+import de.tekup.rest.data.models.TelephoneNumberEntity;
 import de.tekup.rest.data.repositories.AddressRepository;
 import de.tekup.rest.data.repositories.PersonRepository;
+import de.tekup.rest.data.repositories.TelephoneRepository;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -18,36 +20,35 @@ public class PersonServiceImpl implements PersonService {
 	
 	private PersonRepository repos;
 	private AddressRepository reposAddress;
+	private TelephoneRepository reposTelephone;
 	
 	
 	@Autowired
-	public PersonServiceImpl(PersonRepository repos, AddressRepository reposAddress) {
+	public PersonServiceImpl(PersonRepository repos, AddressRepository reposAddress,
+			TelephoneRepository reposTelephone) {
 		super();
 		this.repos = repos;
 		this.reposAddress = reposAddress;
+		this.reposTelephone = reposTelephone;
 	}
+
+
 
 	@Override
 	public PersonEntity createPersonEntity(PersonEntity entity) {
-		// extraction of Address part 
-		AddressEntity address = entity.getAddress();
-		// saving in DB Address without Person part
-		AddressEntity addressInBase = reposAddress.save(address);
-		// Add Id of Address in the Person 
-		entity.setAddress(addressInBase);
-		// save of Person with Address
-		PersonEntity newEntity = repos.save(entity);
-		// Add in Address The Saved Person (With Id)
-		address.setPerson(newEntity);
-		// Resave Address
-		addressInBase = reposAddress.save(address);
-		System.out.println(newEntity);
-		addressInBase = reposAddress.findById(1).orElse(null);
+		// To save phones
+		AddressEntity addressEntity = entity.getAddress();
+		AddressEntity addressInBase = reposAddress.save(addressEntity);
 		
-		System.out.println(addressInBase);
-		System.out.println("address Person :"+addressInBase.getPerson());
-		newEntity = repos.findById(1L).orElse(null);
-		System.out.println(newEntity);
+		entity.setAddress(addressInBase);
+		PersonEntity newEntity = repos.save(entity);
+		
+		for (TelephoneNumberEntity phone : entity.getPhones()) {
+			phone.setPerson(newEntity);
+			reposTelephone.save(phone);
+		}
+		
+		
 		return newEntity;
 	}
 
