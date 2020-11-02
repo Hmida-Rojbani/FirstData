@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+// class save to DataBase (Serialize)
 @Data
 @Entity
 @Table(name = "Person")
@@ -38,4 +39,5 @@ public class PersonEntity {
 	@ManyToMany(mappedBy = "persons")
 	private List<GamesEntity> games;
 
+	
 }

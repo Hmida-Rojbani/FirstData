@@ -91,17 +91,47 @@ public class PersonServiceImpl implements PersonService {
 		return entity;
 	}
 
+	//update Person 
 	@Override
-	public PersonEntity modifyPersonEntity(long id, PersonEntity entity) {
-		PersonEntity oldEntity = this.getPersonEntityById(id);
-		if(entity.getName() != null)
-			oldEntity.setName(entity.getName());
-		if(entity.getDateOfBirth() != null)
-			oldEntity.setDateOfBirth(entity.getDateOfBirth());
-		if(entity.getAddress() != null)
-			oldEntity.setAddress(entity.getAddress());
+	public PersonEntity modifyPersonEntity(long id, PersonEntity newPerson) {
+		PersonEntity oldPerson = this.getPersonEntityById(id);
+		if(newPerson.getName() != null)
+			oldPerson.setName(newPerson.getName());
+		if(newPerson.getDateOfBirth() != null)
+			oldPerson.setDateOfBirth(newPerson.getDateOfBirth());
+		AddressEntity oldAddress = oldPerson.getAddress();
+		AddressEntity newAddress = newPerson.getAddress();
+		// merge/fusion entre oldAddress et newAddress
+		if(newAddress.getNumber() != 0)
+			oldAddress.setNumber(newAddress.getNumber());
+		if(newAddress.getStreet() != null)
+			oldAddress.setStreet(newAddress.getStreet());
+		if(newAddress.getCity() != null)
+			oldAddress.setCity(newAddress.getCity());
 		
-		return repos.save(oldEntity);
+		// merge Phone
+		
+		List<TelephoneNumberEntity> oldPhones= oldPerson.getPhones();
+		List<TelephoneNumberEntity> newPhones= newPerson.getPhones();
+		for (int i = 0; i < newPhones.size(); i++) {
+			TelephoneNumberEntity newPhone = newPhones.get(i);
+			for (int j = 0; j < oldPhones.size(); j++) {
+				TelephoneNumberEntity oldPhone = oldPhones.get(j);
+				if(oldPhone.getId() == newPhone.getId()) {
+					if(newPhone.getNumber() != null)
+						oldPhone.setNumber(newPhone.getNumber());
+					if(newPhone.getOperator() != null)
+						oldPhone.setOperator(newPhone.getOperator());
+					// break over Old loop
+					break;
+				}
+			}
+		}
+		// merge Games
+		
+		
+		
+		return repos.save(oldPerson);
 	}
 
 	@Override
