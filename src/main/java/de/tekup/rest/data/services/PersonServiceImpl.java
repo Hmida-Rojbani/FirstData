@@ -170,5 +170,11 @@ public class PersonServiceImpl implements PersonService {
 	public List<AddressEntity> getAllAddressEntities() {
 		return reposAddress.findAll();
 	}
+	
+	// retourner les persons ayant un phone avec l'operateur donnèe
+	public List<PersonEntity> getAllPersonByPhoneOperator(String operator){
+		// TODO
+		return null;
+	}
 
 }

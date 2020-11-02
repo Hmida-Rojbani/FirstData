@@ -25,7 +25,7 @@ public class AddressEntity {
 	private String street;
 	private String city;
 	
-	@OneToOne(mappedBy = "address")
+	@OneToOne(mappedBy = "address", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private PersonEntity person;
 	

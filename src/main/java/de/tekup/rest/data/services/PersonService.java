@@ -13,5 +13,6 @@ public interface PersonService {
 	PersonEntity modifyPersonEntity(long id, PersonEntity entity);
 	PersonEntity deletePersonEntityById(long id);
 	List<AddressEntity> getAllAddressEntities();
+	public List<PersonEntity> getAllPersonByPhoneOperator(String operator);
 	
 }
