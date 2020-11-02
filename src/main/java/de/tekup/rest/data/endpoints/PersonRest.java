@@ -52,7 +52,7 @@ public class PersonRest {
 		return service.getPersonEntityById(id);
 	}
 	
-	@GetMapping("/{operator}")
+	@GetMapping("/getByOperator/{operator}")
 	public List<PersonEntity> getAllPersonsByOperator(@PathVariable("operator") String operator) {
 		return service.getAllPersonByPhoneOperator(operator);
 	}

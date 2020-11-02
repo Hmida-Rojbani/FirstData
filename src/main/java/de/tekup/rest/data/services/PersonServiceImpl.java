@@ -174,7 +174,20 @@ public class PersonServiceImpl implements PersonService {
 	// retourner les persons ayant un phone avec l'operateur donnèe
 	public List<PersonEntity> getAllPersonByPhoneOperator(String operator){
 		// TODO
-		return null;
+		List<PersonEntity> persons = repos.findAll();
+		List<PersonEntity> personsWithOperator = new ArrayList<>();
+		// filtrage avec L'operator
+		for (PersonEntity person : persons) {
+			for (TelephoneNumberEntity phone : person.getPhones()) {
+				if(phone.getOperator().equalsIgnoreCase(operator)) {
+					personsWithOperator.add(person);
+					break;
+				}
+					
+			}
+		}
+		
+		return personsWithOperator;
 	}
 
 }
