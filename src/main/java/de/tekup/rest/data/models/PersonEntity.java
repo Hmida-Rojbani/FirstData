@@ -27,7 +27,7 @@ public class PersonEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name =  "persoName", length = 50, nullable = false, unique = true)
+	@Column(name =  "personName", length = 50, nullable = false, unique = true)
 	private String name;
 	private LocalDate dateOfBirth;
 	

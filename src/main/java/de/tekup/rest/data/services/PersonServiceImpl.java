@@ -189,5 +189,12 @@ public class PersonServiceImpl implements PersonService {
 		
 		return personsWithOperator;
 	}
+	
+	// Average age of all Persons
+	
+	
+	//Persons who play the type of game the most played.
+	
+	// Display the games type and the number of games for each type;
 
 }
