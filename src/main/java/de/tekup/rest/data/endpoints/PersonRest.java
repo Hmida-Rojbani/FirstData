@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.tekup.rest.data.dto.GameType;
 import de.tekup.rest.data.models.AddressEntity;
 import de.tekup.rest.data.models.PersonEntity;
+import de.tekup.rest.data.models.TelephoneNumberEntity;
 import de.tekup.rest.data.services.PersonService;
 
 @RestController
@@ -65,6 +67,16 @@ public class PersonRest {
 	@GetMapping("/type/mostplayed")
 	public List<PersonEntity> getAllPersonsForGameType() {
 		return service.getPersonsForMostPlayedGameType();
+	}
+	
+	@GetMapping("/type/number")
+	public List<GameType> getAllGameTypesRank() {
+		return service.getTypeAndGamesNumber();
+	}
+	
+	@GetMapping("/operator/get/{operator}")
+	public List<TelephoneNumberEntity> getAllPhoneByOperator(@PathVariable("operator") String operator) {
+		return service.getByOprator(operator);
 	}
 	
 	@DeleteMapping("/{id}")

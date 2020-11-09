@@ -3,6 +3,7 @@ package de.tekup.rest.data.services;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.tekup.rest.data.dto.GameType;
 import de.tekup.rest.data.models.AddressEntity;
 import de.tekup.rest.data.models.GamesEntity;
 import de.tekup.rest.data.models.PersonEntity;
@@ -210,7 +212,7 @@ public class PersonServiceImpl implements PersonService {
 											.distinct()
 											.collect(Collectors.toList());
 		
-		return personsWithOperator;
+		return reposTelephone.getPersonsByOperator(operator);
 	}
 	
 	// Average age of all Persons
@@ -238,27 +240,62 @@ public class PersonServiceImpl implements PersonService {
 	//Persons who play the type of game the most played.
 	
 	public List<PersonEntity> getPersonsForMostPlayedGameType(){
-		GamesEntity mostPlayedType = null;
-		int max = -1;
+		GamesEntity mostPlayedType ;
+		/*int max = -1;
 		for (GamesEntity game : reposGames.findAll()) {
 			if (game.getPersons().size() > max) {
 				max = game.getPersons().size();
 				mostPlayedType = game;
 			}
-		}
+		}*/
 		
-		Set<PersonEntity> persons = new HashSet<>();
-		
-		for (GamesEntity game : reposGames.findAll()) {
+		mostPlayedType = reposGames.findAll()
+								   .stream()
+								   .max(Comparator.comparing(g-> ((GamesEntity) g).getPersons().size()))
+								   .orElseThrow(() -> new RuntimeException("Table of Games is Empty"));
+
+		/*for (GamesEntity game : reposGames.findAll()) {
 			if(game.getType().equals(mostPlayedType.getType())) {
 				persons.addAll(game.getPersons());
 			}
-		}
+		}*/
+		Set<PersonEntity>persons = reposGames.findAll()
+				.stream()
+				.filter(g -> g.getType().equals(mostPlayedType.getType()))
+				.map((GamesEntity g) -> g.getPersons())
+				.flatMap((List<PersonEntity> lp) -> lp.stream())
+				.collect(Collectors.toSet());
+		
 		
 		return new ArrayList<>(persons);
 	
 	}
 	
 	// Display the games type and the number of games for each type;
+	public List<GameType> getTypeAndGamesNumber() {
+		List<GameType> listGameType = new ArrayList<>();
+		for (GamesEntity game : reposGames.findAll()) {
+			// create GameType
+			GameType gameType=new GameType(game.getType(), 1);
+			if(listGameType.contains(gameType)) {
+				listGameType.get(listGameType.indexOf(gameType)).incrementNumber();
+			} else {
+				listGameType.add(gameType);
+			}
+		}
+		
+		// With Stream
+		return listGameType;
+	}
+
+
+
+	@Override
+	public List<TelephoneNumberEntity> getByOprator(String operator) {
+		
+		return reposTelephone.findByOperator(operator);
+	}
+	
+	
 
 }
