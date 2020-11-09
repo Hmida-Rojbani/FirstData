@@ -15,5 +15,6 @@ public interface PersonService {
 	List<AddressEntity> getAllAddressEntities();
 	public List<PersonEntity> getAllPersonByPhoneOperator(String operator);
 	public double getAverageAge();
+	public List<PersonEntity> getPersonsForMostPlayedGameType();
 	
 }

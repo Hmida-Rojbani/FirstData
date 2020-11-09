@@ -226,13 +226,38 @@ public class PersonServiceImpl implements PersonService {
 		double average = sum / persons.size();
 		*/
 		LocalDate now = LocalDate.now(); // date with system date
+
 		return repos.findAll()
 				.stream()
-				.mapToDouble(person -> ChronoUnit.YEARS.between(person.getDateOfBirth(), now))
+				.peek((PersonEntity person) -> System.out.println(person))
+				.mapToDouble((PersonEntity person) -> ChronoUnit.YEARS.between(person.getDateOfBirth(), now))
+				.peek((double age) -> System.out.println(age))
 				.average().orElse(0);
 	}
 	
 	//Persons who play the type of game the most played.
+	
+	public List<PersonEntity> getPersonsForMostPlayedGameType(){
+		GamesEntity mostPlayedType = null;
+		int max = -1;
+		for (GamesEntity game : reposGames.findAll()) {
+			if (game.getPersons().size() > max) {
+				max = game.getPersons().size();
+				mostPlayedType = game;
+			}
+		}
+		
+		Set<PersonEntity> persons = new HashSet<>();
+		
+		for (GamesEntity game : reposGames.findAll()) {
+			if(game.getType().equals(mostPlayedType.getType())) {
+				persons.addAll(game.getPersons());
+			}
+		}
+		
+		return new ArrayList<>(persons);
+	
+	}
 	
 	// Display the games type and the number of games for each type;
 

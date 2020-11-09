@@ -62,6 +62,11 @@ public class PersonRest {
 		return service.getAverageAge();
 	}
 	
+	@GetMapping("/type/mostplayed")
+	public List<PersonEntity> getAllPersonsForGameType() {
+		return service.getPersonsForMostPlayedGameType();
+	}
+	
 	@DeleteMapping("/{id}")
 	public PersonEntity deletePersonById(@PathVariable("id") long id) {
 		return service.deletePersonEntityById(id);
