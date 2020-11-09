@@ -17,11 +17,13 @@ import javax.persistence.Table;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 // class save to DataBase (Serialize)
 @Data
 @Entity
 @Table(name = "Person")
+@EqualsAndHashCode(exclude = {"address","phones","games"})
 public class PersonEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
