@@ -14,5 +14,6 @@ public interface PersonService {
 	PersonEntity deletePersonEntityById(long id);
 	List<AddressEntity> getAllAddressEntities();
 	public List<PersonEntity> getAllPersonByPhoneOperator(String operator);
+	public double getAverageAge();
 	
 }

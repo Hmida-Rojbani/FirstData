@@ -1,5 +1,7 @@
 package de.tekup.rest.data.services;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -212,7 +214,23 @@ public class PersonServiceImpl implements PersonService {
 	}
 	
 	// Average age of all Persons
-	
+	public double getAverageAge() {
+		// version 1
+		/*double sum = 0;
+		List<PersonEntity> persons = repos.findAll();
+		LocalDate now = LocalDate.now(); // date with system date
+		for (PersonEntity person : persons) {
+			//sum += now.getYear() - person.getDateOfBirth().getYear();
+			sum += ChronoUnit.YEARS.between(person.getDateOfBirth(), now);
+		}
+		double average = sum / persons.size();
+		*/
+		LocalDate now = LocalDate.now(); // date with system date
+		return repos.findAll()
+				.stream()
+				.mapToDouble(person -> ChronoUnit.YEARS.between(person.getDateOfBirth(), now))
+				.average().orElse(0);
+	}
 	
 	//Persons who play the type of game the most played.
 	

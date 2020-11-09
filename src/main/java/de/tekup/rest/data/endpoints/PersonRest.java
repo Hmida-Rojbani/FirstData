@@ -57,6 +57,11 @@ public class PersonRest {
 		return service.getAllPersonByPhoneOperator(operator);
 	}
 	
+	@GetMapping("/average/age")
+	public double getAverageAgeOfAllPersons() {
+		return service.getAverageAge();
+	}
+	
 	@DeleteMapping("/{id}")
 	public PersonEntity deletePersonById(@PathVariable("id") long id) {
 		return service.deletePersonEntityById(id);
