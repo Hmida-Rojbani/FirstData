@@ -15,7 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.modelmapper.ModelMapper;
 
+import de.tekup.rest.data.dto.AddressRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -43,6 +45,25 @@ public class PersonEntity {
 	
 	@ManyToMany(mappedBy = "persons",  cascade = CascadeType.REMOVE)
 	private List<GamesEntity> games;
+	
+	public int getAge() {
+		return LocalDate.now().getYear()-this.getDateOfBirth().getYear();
+	}
+	
+	public String getFullAddress() {
+		return address.getNumber() + " "+ address.getStreet()+", "+address.getCity()+".";
+	}
+	
+	public void setAddressReq(AddressRequest address) {
+		
+		ModelMapper mapper = new ModelMapper();
+		this.address = mapper.map(address, AddressEntity.class);
+	}
+	
+	public void setAddress(AddressEntity address) {
+		
+		this.address = address;
+	}
 
 	
 }
